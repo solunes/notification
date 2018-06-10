@@ -29,7 +29,7 @@ class TestSms extends Command
         $text = 'Texto de prueba con atención y cariño.';
         $number = '70554450';
         $this->info('Comenzando la prueba de SMS enviando a MK: '.$text);
-        $response = \Notification::sendSms($number, $text);
+        $response = \Notification::sendSms($number, $text, 'Solunes');
         $this->info('SMS enviado a MK correctamente. Respuesta: '.$response);
     }
 }

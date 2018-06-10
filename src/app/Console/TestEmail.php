@@ -30,7 +30,7 @@ class TestEmail extends Command
         $message_title = 'Email de Prueba';
         $message_content = 'Texto de prueba con atención y cariño.';
         $to_array = ['edumejia30@gmail.com','edu_mejia30@hotmail.com'];
-        $this->info('Comenzando la prueba de Email enviando a MK: '.$text);
+        $this->info('Comenzando la prueba de Email enviando a MK: '.$message_title);
         $response = \Notification::sendEmail($email_title, $to_array, $message_title, $message_content);
         $this->info('Email enviado a MK correctamente. Respuesta: '.$response);
     }

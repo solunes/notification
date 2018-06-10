@@ -13,7 +13,6 @@ class TruncateSeeder extends Seeder {
      */
     public function run()
     {
-        \Solunes\Notification\App\PttTransactionPayment::truncate();
-        \Solunes\Notification\App\PttTransaction::truncate();
+        \Solunes\Notification\App\UserDevice::truncate();
     }
 }

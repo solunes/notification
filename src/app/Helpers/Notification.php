@@ -6,7 +6,7 @@ use Validator;
 
 class Notification {
     
-    public static function sendEmail($email_title, $to_array, $message_title, $message_content, $link = NULL, $icon = 'envelope') {
+    public static function sendEmail($email_title, $to_array, $message_title, $message_content, $link = NULL, $icon = 'Mail-Open') {
       foreach($to_array as $to_data){
         $array = ['title'=>$message_title, 'content'=>$message_content, 'link'=>$link, 'icon'=>$icon];
         if(isset($to_data['name'])){
@@ -19,7 +19,7 @@ class Notification {
         } else {
           $array['email'] = $to_data;
         }
-        \Mail::send('notification::emails.styled', $array, function($m) use($array) {
+        \Mail::send('notification::emails.styled', $array, function($m) use($array, $email_title) {
           $m->to($array['email'], $array['name'])->subject($email_title);
         });
       }
@@ -29,16 +29,16 @@ class Notification {
       \Log::info('Trying to send SMS');
       $params = array(
         'credentials' => array(
-          'key' => config('services.aws.key'),
-          'secret' => config('services.aws.secret'),
+          'key' => config('notification.aws.key'),
+          'secret' => config('notification.aws.secret'),
         ),
-       'region' => config('services.aws.region'), // < your aws from SNS Topic region
+       'region' => config('notification.aws.region'), // < your aws from SNS Topic region
        'version' => 'latest'
       );
       $sns = new \Aws\Sns\SnsClient($params);
       $number = $country_code.$number;
       if(!$sender){
-        $sender = config('app.APP_NAME');
+        $sender = config('app.name');
       }
       $type = 'Promotional';
       if($transactional){
@@ -99,10 +99,10 @@ class Notification {
     public static function generateAudio($message, $file = 'audio', $extension = 'mp3') {
         $params = array(
           'credentials' => array(
-            'key' => config('services.aws.key'),
-            'secret' => config('services.aws.secret'),
+            'key' => config('notification.aws.key'),
+            'secret' => config('notification.aws.secret'),
           ),
-         'region' => config('services.aws.region'), // < your aws from SNS Topic region
+         'region' => config('notification.aws.region'), // < your aws from SNS Topic region
          'version' => 'latest'
         );
         $polly = new \Aws\Polly\PollyClient($params);

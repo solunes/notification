@@ -12,9 +12,9 @@
 		{!! $content !!}
 	</p>
 	@if($link)
-	<p style="font-family: Arial, Helvetica, sans-serif;margin-top: 0px;margin-bottom: 32px;word-break: break-word;font-size: 19px;line-height: 31px;">
+	  <p style="font-family: Arial, Helvetica, sans-serif;margin-top: 0px;margin-bottom: 32px;word-break: break-word;font-size: 19px;line-height: 31px;">
 		<a target="_blank" href="{{ $link }}">{{ $link }}</a>
-	</p>
+	  </p>
 	@endif
 @endsection
 

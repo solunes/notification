@@ -24,11 +24,15 @@ class NotificationServiceProvider extends ServiceProvider {
 
     public function register() {
         /* Registrar ServiceProvider Internos */
-        //$this->app->register('Rossjcooper\LaravelHubSpot\HubSpotServiceProvider');
+        $this->app->register('Vinkla\Pusher\PusherServiceProvider');
+        $this->app->register('Berkayk\OneSignal\OneSignalServiceProvider');
+        $this->app->register('Aws\Laravel\AwsServiceProvider');
 
         /* Registrar Alias */
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        //$loader->alias('HubSpot', 'Rossjcooper\LaravelHubSpot\Facades\HubSpot');
+        $loader->alias('InitPusher', 'Vinkla\Pusher\Facades\Pusher');
+        $loader->alias('OneSignal', 'Berkayk\OneSignal\OneSignalFacade');
+        $loader->alias('AWS', 'Aws\Laravel\AwsFacade');
 
         $loader->alias('Notification', '\Solunes\Notification\App\Helpers\Notification');
 
