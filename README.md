@@ -1,2 +1,2 @@
 # Notification
-Proyecto para soporte maestro de negocios de Solunes Digital
+Paquete de Solunes Digital para Notificaciones
