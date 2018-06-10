@@ -1,0 +1,123 @@
+<?php 
+
+namespace Solunes\Notification\App\Helpers;
+
+use Validator;
+
+class Notification {
+    
+    public static function sendEmail($email_title, $to_array, $message_title, $message_content, $link = NULL, $icon = 'envelope') {
+      foreach($to_array as $to_data){
+        $array = ['title'=>$message_title, 'content'=>$message_content, 'link'=>$link, 'icon'=>$icon];
+        if(isset($to_data['name'])){
+          $array['name'] = $to_data['name'];
+        } else {
+          $array['name'] = 'Usuario';
+        }
+        if(isset($to_data['email'])){
+          $array['email'] = $to_data['email'];
+        } else {
+          $array['email'] = $to_data;
+        }
+        \Mail::send('notification::emails.styled', $array, function($m) use($array) {
+          $m->to($array['email'], $array['name'])->subject($email_title);
+        });
+      }
+    }
+
+    public static function sendSms($number, $message, $sender = NULL, $transactional = false, $country_code = '+591') {
+      \Log::info('Trying to send SMS');
+      $params = array(
+        'credentials' => array(
+          'key' => config('services.aws.key'),
+          'secret' => config('services.aws.secret'),
+        ),
+       'region' => config('services.aws.region'), // < your aws from SNS Topic region
+       'version' => 'latest'
+      );
+      $sns = new \Aws\Sns\SnsClient($params);
+      $number = $country_code.$number;
+      if(!$sender){
+        $sender = config('app.APP_NAME');
+      }
+      $type = 'Promotional';
+      if($transactional){
+        $type = 'Transactional';
+      }
+      $message = str_replace(
+      array('á','é','í','ó','ú','ñ'),
+      array('a','e','i','o','u','n'),
+      $message);
+      $message = iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$message);
+      $args = array(
+        "Message" => $message,
+        "PhoneNumber" => $number,
+        "MessageAttributes" => [
+          'AWS.SNS.SMS.SMSType'=>['DataType'=>'String','StringValue'=>$type],
+          'AWS.SNS.SMS.SenderID'=>['DataType'=>'String','StringValue'=>$sender]
+        ]
+      );
+      $result = $sns->publish($args)->get('MessageId');
+      \Log::info('SMS Published Result: '.json_encode($result));
+      return $result;
+    }
+
+    public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL) {
+        $device_tokens = \Solunes\Notification\App\UserDevice::where('user_id',$user_id)->lists('token')->toArray();
+        if($message&&count($devices)>0){
+          \Notification::sendPusherNotification($message, $device_tokens, $url, $payload, $buttons, $schedule);
+        }
+        return true;
+    }
+
+    public static function sendPusherNotification($message, $device_tokens, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL) {
+      foreach($device_tokens as $device_token){
+          if($device_token&&$device_token!='null'){
+              \OneSignal::sendNotificationToUser($message, $device_token, $url, $payload, $buttons, $schedule);
+          }
+      }
+      //\OneSignal::sendNotificationToAll($notification['message'], NULL, $data = $notification['payload'], NULL, NULL);
+      /*$full_api_path = 'https://onesignal.com/api/v1/notifications';
+      $notification['title'] = 'Blitz Delivery';
+      $profile = 'dev';
+      $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkZTQ0Mjk5MS1hMjQwLTQ1ZGItOGY0NC0wYjA2N2IzYTA5NTgifQ.qYuWWjaPKNkNN9GV7bfUll_CqriU_2_ZsHhddDsjsQY';
+      $array = ['tokens'=>$devices, 'notification'=>$notification, 'profile'=>$profile];
+      $client = new \GuzzleHttp\Client();
+      $client->setDefaultOption('headers', array('Content-Type'=>'application/json', 'Authorization'=>'Bearer '.$token));
+      $res = $client->post($full_api_path, ['body' => json_encode($array) ]);
+      \Log::info($res->json());
+      return true;
+      if($res->getStatusCode()==200||$res->getStatusCode()==201){
+          return true;
+      } else {
+          \Log::info($res->json());
+          //\Func::send_ionic_push($devices, $notification);
+      }*/
+      return true;
+    }
+
+    public static function generateAudio($message, $file = 'audio', $extension = 'mp3') {
+        $params = array(
+          'credentials' => array(
+            'key' => config('services.aws.key'),
+            'secret' => config('services.aws.secret'),
+          ),
+         'region' => config('services.aws.region'), // < your aws from SNS Topic region
+         'version' => 'latest'
+        );
+        $polly = new \Aws\Polly\PollyClient($params);
+        $args = array(
+          "OutputFormat" => $extension,
+          "Text" => $message,
+          "TextType" => 'text',
+          "VoiceId" => 'Penelope'
+        );
+        $result = $polly->synthesizeSpeech($args);
+        $result = $result->get('AudioStream')->getContents();
+        $file .= '-'.rand(100000,999999).'-'.time().'-'.gmdate("Y_m_d-H_i_s");
+        $filename = 'audio/'.$file.'.'.$extension;
+        \Storage::put($filename, $result);
+        return $filename;
+    }
+
+}
