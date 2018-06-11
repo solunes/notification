@@ -1,6 +1,6 @@
 <?php
 
-namespace Solunes\Pagostt\App\Controllers;
+namespace Solunes\Notification\App\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;

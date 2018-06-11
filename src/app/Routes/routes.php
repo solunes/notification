@@ -11,12 +11,12 @@
 |
 */
 
-Route::group(['prefix'=>'pagostt'], function(){
+/*Route::group(['prefix'=>'pagostt'], function(){
     Route::get('/make-all-payments/{customer_id}', 'ProcessController@getMakeAllPayments');
     Route::get('/make-single-payment/{customer_id}/{payment_id}', 'ProcessController@getMakeSinglePayment');
-});
+});*/
 
-Route::group(['prefix'=>'test'], function(){
+/*Route::group(['prefix'=>'test'], function(){
     Route::get('/encryption/{text}', 'TestController@getEncryptionTest');
     Route::get('/decryption/{text}', 'TestController@getDecryptionTest');
-});
+});*/
