@@ -38,6 +38,7 @@ class NotificationServiceProvider extends ServiceProvider {
 
         /* Comandos de Consola */
         $this->commands([
+            \Solunes\Notification\App\Console\TestAudio::class,
             \Solunes\Notification\App\Console\TestEmail::class,
             \Solunes\Notification\App\Console\TestSms::class,
         ]);

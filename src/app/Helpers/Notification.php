@@ -96,7 +96,7 @@ class Notification {
       return true;
     }
 
-    public static function generateAudio($message, $file = 'audio', $extension = 'mp3') {
+    public static function generateAudio($message, $sex = 'female', $file = 'audio', $extension = 'mp3', $folder = 'audio') {
         $params = array(
           'credentials' => array(
             'key' => config('notification.aws.key'),
@@ -106,16 +106,24 @@ class Notification {
          'version' => 'latest'
         );
         $polly = new \Aws\Polly\PollyClient($params);
+        $voiceId = 'Penelope';
+        if($sex=='male'){
+          $voiceId = 'Miguel';
+        } else if($sex=='en'||$sex=='female-en'){
+          $voiceId = 'Joanna';
+        } else if($sex=='male-en'){
+          $voiceId = 'Matthew';
+        }
         $args = array(
           "OutputFormat" => $extension,
           "Text" => $message,
           "TextType" => 'text',
-          "VoiceId" => 'Penelope'
+          "VoiceId" => $voiceId
         );
         $result = $polly->synthesizeSpeech($args);
         $result = $result->get('AudioStream')->getContents();
         $file .= '-'.rand(100000,999999).'-'.time().'-'.gmdate("Y_m_d-H_i_s");
-        $filename = 'audio/'.$file.'.'.$extension;
+        $filename = $folder.'/'.$file.'.'.$extension;
         \Storage::put($filename, $result);
         return $filename;
     }

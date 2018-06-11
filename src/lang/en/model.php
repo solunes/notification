@@ -9,7 +9,6 @@ return [
     |
     */
 
-    'ptt-transaction' => 'Transacción de PagosTT|Transacciones de PagosTT',
-    'ptt-transaction-payment' => 'Pago de Transacción|Pagos de Transacciones',
+	'user-device' => 'Dispositivo de Usuario|Dispositivos de Usuario',
 
 ];

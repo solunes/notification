@@ -9,16 +9,12 @@ return [
     |
     */
 
-    'amount' => 'Monto',
+    'active' => '¿Activo?',
     'created_at' => 'Fecha de Creación',
-    'customer' => 'Cliente',
+    'expiration_date' => 'Fecha de Expiración',
     'id' => 'ID',
-    'parent' => 'Padre',
-    'payment' => 'Pago',
-    'payment_code' => 'Código de Pago',
-    'ptt_transaction_payments' => 'Pagos de Transacción',
-    'status' => 'Estado',
-    'transaction' => 'Transacción',
-    'updated_at' => 'Fecha de Actualización',
+    'token' => 'Token',
+    'updated_at' => 'Fecha de Edición',
+    'user' => 'Usuario',
 
 ];

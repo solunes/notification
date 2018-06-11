@@ -3,12 +3,10 @@
 return array(
 
 	// MENU
-	'notification' => 'PagosTT',
-	'payments' => 'Payments',
+	'parameters' => 'Parámetros',
 
 	// CUSTOM TRANS
-	'cancelled' => 'Cancelled',
-	'holding' => 'Holding',
-	'paid' => 'Paid',
+	'0' => 'No',
+	'1' => 'Si',
 
 );
