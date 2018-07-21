@@ -62,18 +62,21 @@ class Notification {
       return $result;
     }
 
-    public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL) {
+    public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = null, $subtitle = null) {
         $device_tokens = \Solunes\Notification\App\UserDevice::where('user_id',$user_id)->lists('token')->toArray();
         if($message&&count($device_tokens)>0){
-          \Notification::sendPusherNotification($message, $device_tokens, $url, $payload, $buttons, $schedule);
+          \Notification::sendPusherNotification($message, $device_tokens, $url, $payload, $buttons, $schedule, $headings, $subtitle);
         }
         return true;
     }
 
-    public static function sendPusherNotification($message, $device_tokens, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL) {
+    public static function sendPusherNotification($message, $device_tokens, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = null, $subtitle = null) {
+      if(!$subtitle){
+        $subtitle = config('solunes.app_name');
+      }
       foreach($device_tokens as $device_token){
           if($device_token&&$device_token!='null'){
-              \OneSignal::sendNotificationToUser($message, $device_token, $url, $payload, $buttons, $schedule);
+              \OneSignal::sendNotificationToUser($message, $device_token, $url, $payload, $buttons, $schedule, $headings, $subtitle);
           }
       }
       //\OneSignal::sendNotificationToAll($notification['message'], NULL, $data = $notification['payload'], NULL, NULL);
