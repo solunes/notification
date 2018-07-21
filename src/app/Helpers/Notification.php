@@ -64,7 +64,7 @@ class Notification {
 
     public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL) {
         $device_tokens = \Solunes\Notification\App\UserDevice::where('user_id',$user_id)->lists('token')->toArray();
-        if($message&&count($devices)>0){
+        if($message&&count($device_tokens)>0){
           \Notification::sendPusherNotification($message, $device_tokens, $url, $payload, $buttons, $schedule);
         }
         return true;
