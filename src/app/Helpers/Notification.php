@@ -102,6 +102,21 @@ class Notification {
       return true;
     }
 
+    public static function saveAppUserDevice($user_id, $token, $expiration_date) {
+      if($user_id&&$token){
+        if($device = \Solunes\Notification\App\UserDevice::where('token', $token)->where('user_id', $user_id)->first()){
+        } else {
+          $device = new \Solunes\Notification\App\UserDevice;
+          $device->user_id = $user_id;
+          $device->token = $token;
+        }
+        $device->expiration_date = $expiration_date;
+        $device->save();
+      } else {
+        \Log::info('Error en registrar push token: Usuario: '.$user_id.' - Token: '.$token);
+      }
+    }
+
     public static function generateAudio($message, $sex = 'female', $file = 'audio', $extension = 'mp3', $folder = 'audio') {
         $params = array(
           'credentials' => array(
