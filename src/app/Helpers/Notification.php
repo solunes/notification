@@ -62,7 +62,7 @@ class Notification {
       return $result;
     }
 
-    public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = [], $subtitle = []) {
+    public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = NULL, $subtitle = NULL) {
         $device_tokens = \Solunes\Notification\App\UserDevice::where('user_id',$user_id)->lists('token')->toArray();
         if($message&&count($device_tokens)>0){
           \Notification::sendPusherNotification($message, $device_tokens, $url, $payload, $buttons, $schedule, $headings, $subtitle);
@@ -70,9 +70,12 @@ class Notification {
         return true;
     }
 
-    public static function sendPusherNotification($message, $device_tokens, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = [], $subtitle = []) {
+    public static function sendPusherNotification($message, $device_tokens, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = NULL, $subtitle = NULL) {
       if(!$headings){
-        $subtitle = [config('solunes.main_lang')=>config('solunes.app_name')];
+        $headings = config('solunes.app_name');
+      }
+      if(!$subtitle){
+        $subtitle = config('solunes.app_name');
       }
       foreach($device_tokens as $device_token){
           if($device_token&&$device_token!='null'){
