@@ -26,7 +26,7 @@ class NotificationServiceProvider extends ServiceProvider {
         /* Registrar ServiceProvider Internos */
         $this->app->register('Dingo\Api\Provider\LaravelServiceProvider');
         $this->app->register('Tymon\JWTAuth\Providers\JWTAuthServiceProvider');
-        $this->app->register('Vinkla\Pusher\PusherServiceProvider');
+        $this->app->register('Pusher\Laravel\PusherServiceProvider');
         $this->app->register('Berkayk\OneSignal\OneSignalServiceProvider');
         $this->app->register('Aws\Laravel\AwsServiceProvider');
 
@@ -35,7 +35,7 @@ class NotificationServiceProvider extends ServiceProvider {
         $loader->alias('API', 'Dingo\Api\Facade\API');
         $loader->alias('JWTAuth', 'Tymon\JWTAuth\Facades\JWTAuth');
         $loader->alias('JWTFactory', 'Tymon\JWTAuth\Facades\JWTFactory');
-        $loader->alias('InitPusher', 'Vinkla\Pusher\Facades\Pusher');
+        $loader->alias('Pusher', 'Pusher\Laravel\Facades\Pusher');
         $loader->alias('OneSignal', 'Berkayk\OneSignal\OneSignalFacade');
         $loader->alias('AWS', 'Aws\Laravel\AwsFacade');
 
