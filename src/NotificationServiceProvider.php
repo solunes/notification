@@ -35,7 +35,7 @@ class NotificationServiceProvider extends ServiceProvider {
         $loader->alias('API', 'Dingo\Api\Facade\API');
         $loader->alias('JWTAuth', 'Tymon\JWTAuth\Facades\JWTAuth');
         $loader->alias('JWTFactory', 'Tymon\JWTAuth\Facades\JWTFactory');
-        $loader->alias('Pusher', 'Vinkla\Pusher\Facades\Pusher');
+        $loader->alias('PusherInit', 'Vinkla\Pusher\Facades\Pusher');
         $loader->alias('OneSignal', 'Berkayk\OneSignal\OneSignalFacade');
         $loader->alias('AWS', 'Aws\Laravel\AwsFacade');
 
