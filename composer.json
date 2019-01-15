@@ -11,7 +11,7 @@
     ],
     "require": {
         "pusher/pusher-http-laravel": "^2.3",
-        "berkayk/onesignal-laravel": "master",
+        "berkayk/onesignal-laravel": "^v1.0",
         "aws/aws-sdk-php-laravel": "^3.1",
         "dingo/api": "1.0.*@dev",
         "tymon/jwt-auth": "0.*",
