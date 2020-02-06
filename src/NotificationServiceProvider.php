@@ -46,6 +46,8 @@ class NotificationServiceProvider extends ServiceProvider {
             \Solunes\Notification\App\Console\TestAudio::class,
             \Solunes\Notification\App\Console\TestEmail::class,
             \Solunes\Notification\App\Console\TestSms::class,
+            \Solunes\Notification\App\Console\TestSmsTwilo::class,
+            \Solunes\Notification\App\Console\TestWhatsappTwilo::class,
             \Solunes\Notification\App\Console\TestNotification::class,
         ]);
 

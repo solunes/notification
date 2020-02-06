@@ -62,6 +62,48 @@ class Notification {
       return $result;
     }
 
+    public static function sendSmsTwilo($number, $message, $sender = NULL, $transactional = false, $country_code = '+591') {
+      \Log::info('Trying to send SMS');
+      $sid = config('notification.twilo.sid'); // Your Account SID from www.twilio.com/console
+      $token = config('notification.twilo.token'); // Your Auth Token from www.twilio.com/console
+      $twilo_number = config('notification.twilo.sms_number'); // Your Auth Token from www.twilio.com/console
+      $number = $country_code.$number;
+      if(!$sender){
+        $sender = config('app.name');
+      }
+      $client = new \Twilio\Rest\Client($sid, $token);
+      $message = $client->messages->create(
+        $number, // Text this number
+        array(
+          'from' => '+'.$twilo_number, // From a valid Twilio number
+          'body' => $message
+        )
+      );
+      \Log::info('SMS Twilo Published Result: '.json_encode($message));
+      return $message;
+    }
+
+    public static function sendWhatsappTwilo($number, $message, $sender = NULL, $transactional = false, $country_code = '+591') {
+      \Log::info('Trying to send SMS');
+      $sid = config('notification.twilo.sid'); // Your Account SID from www.twilio.com/console
+      $token = config('notification.twilo.token'); // Your Auth Token from www.twilio.com/console
+      $twilo_number = 'whatsapp:+'.config('notification.twilo.whatsapp_number'); // Your Auth Token from www.twilio.com/console
+      $number = 'whatsapp:'.$country_code.$number;
+      if(!$sender){
+        $sender = config('app.name');
+      }
+      $client = new \Twilio\Rest\Client($sid, $token);
+      $message = $client->messages->create(
+        $number, // Text this number
+        array(
+          'from' => $twilo_number, // From a valid Twilio number
+          'body' => $message
+        )
+      );
+      \Log::info('SMS Twilo Published Result: '.json_encode($message));
+      return $message;
+    }
+
     public static function sendNotificationToUser($user_id, $message, $url = NULL, $payload = NULL, $buttons = NULL, $schedule = NULL, $headings = NULL, $subtitle = NULL) {
         $device_tokens = \Solunes\Notification\App\UserDevice::where('user_id',$user_id)->lists('token')->toArray();
         if($message&&count($device_tokens)>0){
