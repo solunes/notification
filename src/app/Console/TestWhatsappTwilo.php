@@ -29,7 +29,11 @@ class TestWhatsappTwilo extends Command
         $text = 'Texto de prueba con atención y cariño.';
         $number = '70554450';
         $this->info('Comenzando la prueba de Whatsapp enviando a MK: '.$text);
-        $response = \Notification::sendWhatsappTwilo($number, $text, 'Solunes');
-        $this->info('SMS enviado a MK correctamente. Respuesta: '.$response);
+        $response = \Notification::sendWhatsappTwilo($number, $text);
+        if($response=='queued'||$response=='sent'){
+            $this->info('Whatsapp enviado a MK correctamente. Respuesta: '.$response);
+        } else {
+            $this->info('Whatsapp NO enviado a MK. Respuesta: '.$response);
+        }
     }
 }
