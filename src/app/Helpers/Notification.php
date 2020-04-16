@@ -72,7 +72,7 @@ class Notification {
         $twilo_number = $sender_number;
       }
       $client = new \Twilio\Rest\Client($sid, $token);
-      if(is_number($twilo_number)){
+      if(is_numeric($twilo_number)){
         $twilo_number = '+'.$twilo_number;
       }
       $responseMessage = $client->messages->create(
